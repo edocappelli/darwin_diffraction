@@ -1,0 +1,55 @@
+#
+# ATOMIC SCATTERING POWER
+#
+# These data, computed for neutral atoms and ions are valid for the full
+# range of sin(theta)/lambda from 0.0 to 6.0 A-1.This table have been
+# developed from fits of o linear combination of five Gaussians to the
+# values of the scattering factors tabulated in "International tables for
+# Crystallography (1992) [Vol. C. Dordrecht: Kluwer Academic Publishers].
+# For a detailed discussion of the underlying validity of the
+# information contained in these directories see, for example:
+#
+#         New Analytical Scattering Factor Functions for Free Atoms
+#                   and Ions for Free Atoms and Ions
+#                      D. Waasmaier & A. Kirfel
+#                   Acta Cryst. (1995). A51, 416-413
+#
+# fo the non-dispersive part of the atomic scattering factor is a
+# function of the selected element and of sin(theta)/lambda, where
+# lambda is the photon wavelength and theta is incident angle.
+# This function can be approximated by a function:
+#
+#   fo[k] = c + [SUM a_i*EXP(-b_i*(k^2))]
+#               i=1,5
+#
+# where k = sin(theta) / lambda and c, a_i and b_i
+# are the coefficients tabulated in this file (in columns:
+# a1  a2  a3  a4  a5  c  b1  b2  b3  b4  b5
+
+5.275329  3.191038  1.511514  1.356849  2.519114  0.145073   2.631338 33.730728  0.081119 86.288643  1.170087
+
+#
+# STRUCTURE FACTOR
+#
+# Following the treatment presented in "Theory of X-Ray Diffraction in Crystals"
+# by William H. Zachariasen, the structure factor is defined as:
+#
+#   Fo[H] = [SUM fo_k * EXP(i*H*r_k)]
+#           k={atoms in the unit cell}
+#
+# The unit cell dimensions (Angstroms and degrees)
+# a b c alpha beta gamma
+
+5.43070 5.43070 5.43070 90.0000 90.0000 90.0000 0.0 0.0 0.0 0.0 0.0
+
+# atoms coordinates in unit cell:
+# AtomicNumber  Fraction  X  Y  Z
+
+14 1.0 0.0  0.0  0.0 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 0.0  0.5  0.5 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 0.5  0.0  0.5 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 0.5  0.5  0.0 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 .25  .25  .25 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 .25  .75  .75 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 .75  .25  .75 0.0 0.0 0.0 0.0 0.0 0.0
+14 1.0 .75  .75  .25 0.0 0.0 0.0 0.0 0.0 0.0
