@@ -8,12 +8,10 @@ from scipy import constants
 
 class Crystal(object):
     """
-    This class defines a crystal as characterised by the crystal type (e.g. Si, Ge, GaAs etc.)
-    and by the Miller indices of the planes generating the diffraction peak as
-    described in the Bragg model. Once these parameters are set, it is possible to calculate useful
-    parameters through appropriate methods.
-    """
+    This class stores crystal data read from a data file (e.g. Si.txt, Ge.txt, etc.)
 
+    """
+    # TODO: asymmetry angle not needed here, used in  Diffraction
     def __init__(self, crystal_type, asymmetry_angle):
 
         """
@@ -88,6 +86,7 @@ class Diffraction(Crystal):
     the Bragg angle, the b parameter and the structure factors.
     """
 
+    # todo: not here: global variables?? use "import scipy.constants as constants" and use "constants.c" etc
     e = constants.elementary_charge  # charge of the proton
     c = constants.speed_of_light  # speed of light in vacuum
     m = constants.electron_mass  # mass of the electron

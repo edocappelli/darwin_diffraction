@@ -7,20 +7,33 @@ import matplotlib.pyplot as plt
 import diffraction
 
 
-def create_instance():
+#def create_instance():
+def create_diffraction_setup(use_defaults=False):
 
     """
     asks user to insert the diffraction setup parameters and creates an instance of the DiffractionSetup subclass
     :return instance
     """
-    crystal_type = input("Please insert crystal type (e.g. Si): ")
-    asymmetry_angle = float(input("Please insert the asymmetry angle in degrees: "))
-    miller_h = int(input("Please insert Miller H: "))
-    miller_k = int(input("Please insert Miller K: "))
-    miller_l = int(input("Please insert Miller L: "))
-    wavelength = float(input("Please insert the x-ray energy in keV: "))
-    polarization = input("Please insert the x-ray polarization ('s' or 'p'): ")
-    polarization_bool = True
+
+    if use_defaults:
+        crystal_type = "Si"
+        asymmetry_angle = 0.0
+        miller_h = 1
+        miller_k = 1
+        miller_l = 1
+        wavelength = 8.0
+        polarization = 's'
+        polarization_bool = True
+    else:
+        crystal_type = input("Please insert crystal type (e.g. Si): ")
+        asymmetry_angle = float(input("Please insert the asymmetry angle in degrees: "))
+        miller_h = int(input("Please insert Miller H: "))
+        miller_k = int(input("Please insert Miller K: "))
+        miller_l = int(input("Please insert Miller L: "))
+        # todo: do not call wavelength to photon_energy, very confusing!!
+        wavelength = float(input("Please insert the x-ray energy in keV: "))
+        polarization = input("Please insert the x-ray polarization ('s' or 'p'): ")
+        polarization_bool = True
 
     if polarization == "s":
         polarization_bool = True
@@ -28,22 +41,33 @@ def create_instance():
     elif polarization == "p":
         polarization_bool = False
 
-    instance = diffraction.Diffraction(crystal_type, asymmetry_angle,
+    diffraction_experiment = diffraction.Diffraction(crystal_type, asymmetry_angle,
                                        miller_h, miller_k, miller_l, wavelength, polarization_bool)
 
-    return instance
+    return diffraction_experiment
 
 
-def plotter(start=-200, stop=200, num=1000):
+def plotter(diffraction_experiment,start=-200, stop=200, num=1000):
 
-    instance = create_instance()
+    # diffraction_experiment = create_instance()
+
+
     theta_diff = np.linspace(start, stop, num)  # in micro radians
-    theta_bragg = instance.bragg_angle()
+
+
+    # TODO: this part should not be here, as this is only for plotting, not for calculation
+
+    # everything here is in Diffraction instance, except the inputs theta_diff
+    # thus should be a new method in Diffraction:
+    # def darwin_reflectivity(self,theta_diff):
+    #   ...
+    #   return reflectivity
+    theta_bragg = diffraction_experiment.bragg_angle()
     alpha = 2 * theta_diff * 1e-6 * np.sin(2 * theta_bragg)  # Zachariasen [3.116]
-    b = instance.parameter_b()
-    k = instance.parameter_k()
-    psi_0 = np.ones(num) * instance.parameter_psi_0()
-    psi_h = instance.parameter_psi_h()
+    b = diffraction_experiment.parameter_b()
+    k = diffraction_experiment.parameter_k()
+    psi_0 = np.ones(num) * diffraction_experiment.parameter_psi_0()
+    psi_h = diffraction_experiment.parameter_psi_h()
 
     y = ((0.5 * (1-b) * psi_0) + (0.5 * b * alpha)) / (np.sqrt(np.absolute(b)) * k * np.absolute(psi_h))
 
@@ -59,6 +83,8 @@ def plotter(start=-200, stop=200, num=1000):
 
         else:
             y[i] = 1
+
+    ##################
 
     plt.figure()
     plt.plot(theta_diff, reflectivity)
