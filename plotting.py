@@ -55,36 +55,9 @@ def plotter(diffraction_experiment,start=-200, stop=200, num=1000):
     theta_diff = np.linspace(start, stop, num)  # in micro radians
 
 
-    # TODO: this part should not be here, as this is only for plotting, not for calculation
+    reflectivity = diffraction_experiment.darwin_profile_theta(theta_diff)
 
-    # everything here is in Diffraction instance, except the inputs theta_diff
-    # thus should be a new method in Diffraction:
-    # def darwin_reflectivity(self,theta_diff):
-    #   ...
-    #   return reflectivity
-    theta_bragg = diffraction_experiment.bragg_angle()
-    alpha = 2 * theta_diff * 1e-6 * np.sin(2 * theta_bragg)  # Zachariasen [3.116]
-    b = diffraction_experiment.parameter_b()
-    k = diffraction_experiment.parameter_k()
-    psi_0 = np.ones(num) * diffraction_experiment.parameter_psi_0()
-    psi_h = diffraction_experiment.parameter_psi_h()
 
-    y = ((0.5 * (1-b) * psi_0) + (0.5 * b * alpha)) / (np.sqrt(np.absolute(b)) * k * np.absolute(psi_h))
-
-    reflectivity = np.ones(num)
-
-    for i in np.arange(num):  # Zachariasen [3.192b]
-
-        if y[i] < -1:
-            reflectivity[i] = (-y[i] - np.sqrt(y[i] ** 2 - 1)) ** 2
-
-        elif y[i] > 1:
-            reflectivity[i] = (y[i] - np.sqrt(y[i] ** 2 - 1)) ** 2
-
-        else:
-            y[i] = 1
-
-    ##################
 
     plt.figure()
     plt.plot(theta_diff, reflectivity)

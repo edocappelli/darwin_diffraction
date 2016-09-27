@@ -217,3 +217,40 @@ class Diffraction(Crystal):
         e_radius = 2.8179403267e-15  # cgs units
 
         return - e_radius * (wavelength ** 2 / (v * np.pi)) * f_h
+
+
+    def darwin_profile_theta(self,theta_diff):
+
+
+        num = theta_diff.size
+
+
+        theta_bragg = self.bragg_angle()
+        alpha = 2 * theta_diff * 1e-6 * np.sin(2 * theta_bragg)  # Zachariasen [3.116]
+        b = self.parameter_b()
+        k = self.parameter_k()
+        psi_0 = np.ones(num) * self.parameter_psi_0()
+        psi_h = self.parameter_psi_h()
+
+        y = ((0.5 * (1-b) * psi_0) + (0.5 * b * alpha)) / (np.sqrt(np.absolute(b)) * k * np.absolute(psi_h))
+
+        reflectivity = np.ones(num)
+
+        for i in range(num):  # Zachariasen [3.192b]
+
+            if y[i] < -1:
+                reflectivity[i] = (-y[i] - np.sqrt(y[i] ** 2 - 1)) ** 2
+
+            elif y[i] > 1:
+                reflectivity[i] = (y[i] - np.sqrt(y[i] ** 2 - 1)) ** 2
+
+            else:
+                y[i] = 1
+
+        return reflectivity
+
+    def darwin_profile_y(self,y_array):
+        pass
+
+
+
